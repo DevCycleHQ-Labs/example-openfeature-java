@@ -2,6 +2,8 @@ package com.hello_togglebot;
 
 import java.util.Map;
 
+import dev.openfeature.sdk.Client;
+import dev.openfeature.sdk.MutableContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,16 @@ public class HelloController {
 	@GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody()
 	public String index(WebRequest request) {
-		DevCycleLocalClient devcycleClient = DevCycleClient.getInstance();
+		DevCycleWithOpenFeatureClient ofDVCClient = DevCycleWithOpenFeatureClient.getInstance();
+		Client openFeatureClient = ofDVCClient.getOpenFeatureClient();
+
 		DevCycleUser user = (DevCycleUser) request.getAttribute("user", WebRequest.SCOPE_REQUEST);
-		String step = devcycleClient.variableValue(user, "example-text", "default");
+		if (user == null)  {
+			throw new RuntimeException("User not found");
+		}
+
+        MutableContext context = new MutableContext(user.getUserId());
+		String step = openFeatureClient.getStringValue("example-text", "default", context);
 
 		String header;
 		String body;
@@ -52,7 +61,8 @@ public class HelloController {
 	@GetMapping("/variables")
 	@ResponseBody()
 	public Map<String, BaseVariable> variables(WebRequest request) {
-		DevCycleLocalClient devcycleClient = DevCycleClient.getInstance();
+		DevCycleWithOpenFeatureClient ofDVCClient = DevCycleWithOpenFeatureClient.getInstance();
+		DevCycleLocalClient devcycleClient = ofDVCClient.getDevCycleClient();
 		DevCycleUser user = (DevCycleUser) request.getAttribute("user", WebRequest.SCOPE_REQUEST);
 		Map<String, BaseVariable> variables = devcycleClient.allVariables(user);
 
