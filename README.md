@@ -1,6 +1,6 @@
-# DevCycle Java Server SDK Example App
+# DevCycle OpenFeature Java Server SDK Example App
 
-An example app built using the [DevCycle Java Server SDK](https://docs.devcycle.com/sdk/server-side-sdks/java/) with local bucketing
+An example app built using the [DevCycle Java OpenFeature Provider](https://docs.devcycle.com/sdk/server-side-sdks/java-local/java-local-openfeature)
 
 ## Requirements
 
