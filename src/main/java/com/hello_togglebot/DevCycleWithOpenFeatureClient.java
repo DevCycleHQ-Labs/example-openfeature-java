@@ -28,9 +28,9 @@ public class DevCycleWithOpenFeatureClient {
 		}
 
 		DevCycleLocalOptions options = DevCycleLocalOptions.builder()
-            .configPollingIntervalMS(5000)
-            .eventFlushIntervalMS(5000)
-            .build();
+			.configPollingIntervalMS(5000)
+			.eventFlushIntervalMS(5000)
+			.build();
 
 		return new DevCycleLocalClient(devcycleSdkKey, options);
     }
